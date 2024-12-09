@@ -36,7 +36,7 @@ footer {
     width: 100%;
     height: 100%;
 
-    background-color: #370617;
+    background-color: #fff;
     box-shadow: 0 0 50px -20px #000;
     border-radius: 2%;
 
@@ -57,7 +57,7 @@ footer {
     padding-top: 30px;
 
     border-bottom: 1px solid transparent;
-    border-image: -webkit-linear-gradient(25deg, #FFBE0B, #FB5607, #FF006E, #8338EC, #3A86FF) 20;
+    background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
     background: #000;
 }
 
@@ -70,7 +70,7 @@ footer {
     letter-spacing: 1px;
 
 
-    background: -webkit-linear-gradient(25deg, #FFBE0B, #FB5607, #FF006E, #8338EC, #3A86FF);
+    background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
 }
