@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fintech & Credit Card Fraud Chatbot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ff9a8b, #ff6a00);
+            color: white;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .chatbox {
+            width: 350px;
+            max-width: 90%;
+            height: 500px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            overflow-y: auto;
+            padding: 20px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .chatbox header {
+            font-size: 1.5rem;
+            font-weight: 500;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .chat {
+            margin-bottom: 20px;
+        }
+
+        .chatbot {
+            background-color: #282828;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 5px 0;
+            word-wrap: break-word;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .user {
+            background-color: #ff6a00;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 5px 0;
+            text-align: right;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+            border: none;
+            font-size: 1rem;
+            outline: none;
+            animation: bounce 0.5s ease;
+        }
+
+        .send-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #ff6a00;
+            color: white;
+            border: none;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            animation: bounce 0.5s ease;
+        }
+
+        .send-btn:hover {
+            background-color: #ff9a8b;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            0% { opacity: 0; transform: translateX(30px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes bounce {
+            0% { transform: translateY(5px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #333;
+            text-align: center;
+            color: white;
+            padding: 10px 0;
+            font-size: 1rem;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chatbox">
+            <header>Fintech & Credit Card Fraud Chatbot</header>
+            <div id="chat-container">
+                <div class="chat chatbot">Hello! Ask me anything about Fintech or Credit Card Fraud!</div>
+            </div>
+            <input id="user-input" class="input-field" type="text" placeholder="Type your question here..." />
+            <button id="send-btn" class="send-btn">Send</button>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2024 CREDsafe. All rights reserved.
+    </footer>
+
+    <script>
+        const questionsAndAnswers = [
+            { 
+                question: "What is Fintech?", 
+                answer: "Fintech, short for financial technology, refers to the use of technology to provide financial services. This includes digital payments, online banking, peer-to-peer lending, crowdfunding, insurance technology (InsurTech), and wealth management." 
+            },
+            { 
+                question: "How is Fintech changing the financial industry?", 
+                answer: "Fintech is revolutionizing the financial industry by providing faster, cheaper, and more accessible financial services. It enables digital payments, peer-to-peer transactions, blockchain-based solutions, and automation of financial tasks, making it easier for businesses and consumers to manage their finances." 
+            },
+            { 
+                question: "What is Credit Card Fraud?", 
+                answer: "Credit card fraud occurs when someone uses a stolen, counterfeit, or unauthorized credit card to make purchases or transactions. It can involve various methods such as card-not-present fraud, card-present fraud, and account takeover." 
+            },
+            { 
+                question: "How does Credit Card Fraud Detection work?", 
+                answer: "Credit card fraud detection involves monitoring transaction patterns for unusual activity, such as large purchases, unfamiliar locations, or rapid transactions. Machine learning algorithms and AI models are often used to identify and flag potentially fraudulent transactions in real-time."
+            },
+            { 
+                question: "What is Blockchain in Fintech?", 
+                answer: "Blockchain is a decentralized digital ledger technology that records transactions across multiple computers. It is highly secure and is often used in cryptocurrencies, smart contracts, and other Fintech innovations to ensure transparency and reduce fraud." 
+            },
+            { 
+                question: "How to protect credit cards from fraud?", 
+                answer: "To protect your credit card, use strong and unique passwords for online accounts, enable two-factor authentication, avoid sharing card details over unsecured networks, monitor your account regularly for suspicious activity, and report lost or stolen cards immediately."
+            },
+            { 
+                question: "What is a Credit Card Chargeback?", 
+                answer: "A chargeback occurs when a credit card holder disputes a charge, and the transaction is reversed. This can happen when the cardholder believes the transaction was fraudulent or that the goods or services were not as expected."
+            },
+            { 
+                question: "How does machine learning help in fraud detection?", 
+                answer: "Machine learning helps detect fraud by analyzing large datasets of transactions and identifying patterns of behavior that are indicative of fraud. It can learn to recognize suspicious activity and flag potentially fraudulent transactions in real-time, reducing human error and response times."
+            },
+            { 
+                question: "What is the difference between credit card fraud and identity theft?", 
+                answer: "Credit card fraud involves the unauthorized use of someone’s credit card for financial gain, while identity theft refers to the unauthorized use of someone's personal information, such as Social Security numbers, to commit fraud or other crimes."
+            },
+            { 
+                question: "What is 3D Secure (3DS) in Credit Cards?", 
+                answer: "3D Secure (3DS) is an online payment security protocol that helps prevent unauthorized credit card transactions. It adds an additional layer of authentication during the payment process, requiring the cardholder to enter a password or a verification code sent to their phone."
+            },
+            { 
+                question: "How can I detect fraudulent transactions on my credit card?", 
+                answer: "To detect fraudulent transactions, regularly monitor your bank and credit card statements, set up transaction alerts, check for unfamiliar charges, and immediately report any suspicious activity to your card issuer."
+            },
+            { 
+                question: "What is EMV technology?", 
+                answer: "EMV (Europay, MasterCard, and Visa) technology refers to the use of microchip cards, which are more secure than magnetic stripe cards. These cards generate unique transaction codes, making them more difficult to counterfeit and reducing fraud."
+            },
+            { 
+                question: "What are the key features of a good fraud detection system?", 
+                answer: "A good fraud detection system should include real-time transaction monitoring, the ability to flag unusual behavior, machine learning or AI algorithms to detect patterns, and tools for verifying user identity, such as two-factor authentication."
+            },
+            { 
+                question: "What is a tokenization in credit card processing?", 
+                answer: "Tokenization in credit card processing involves replacing sensitive card information, like the card number, with a unique identifier called a token. This makes transactions more secure by ensuring the actual card details are not exposed during the transaction."
+            },
+            { 
+                question: "What should I do if my credit card is compromised?", 
+                answer: "If your credit card is compromised, immediately contact your card issuer to report the fraud, block the card, and request a new one. Monitor your accounts for any unauthorized transactions, and file a fraud report if necessary."
+            },
+    { 
+        question: "What is online banking?", 
+        answer: "Online banking refers to the use of the internet to carry out banking activities such as checking account balances, transferring funds, paying bills, and managing financial transactions." 
+    },
+    { 
+        question: "How do online transactions work?", 
+        answer: "Online transactions involve the transfer of money over the internet. A customer provides payment details (credit/debit card, bank account) on an online platform, and the payment gateway securely processes the transaction by connecting with the bank or card issuer." 
+    },
+    { 
+        question: "What is credit card fraud?", 
+        answer: "Credit card fraud occurs when a person uses someone else’s credit card without permission to make unauthorized purchases or access funds. It can happen through physical theft, online hacks, or card data breaches." 
+    },
+    { 
+        question: "What is debit card fraud?", 
+        answer: "Debit card fraud occurs when a person gains unauthorized access to a debit card and its PIN to make fraudulent transactions. Unlike credit card fraud, debit card fraud directly impacts the user's bank account." 
+    },
+    { 
+        question: "How can I prevent online banking fraud?", 
+        answer: "To prevent online banking fraud, use strong, unique passwords for your accounts, enable two-factor authentication, avoid using public Wi-Fi for transactions, and regularly monitor your bank statements for any unauthorized activity." 
+    },
+    { 
+        question: "What are the risks of online banking?", 
+        answer: "Risks of online banking include phishing attacks, malware, data breaches, identity theft, and unauthorized transactions. These risks can be minimized by practicing good security hygiene, such as using strong passwords and avoiding suspicious links." 
+    },
+    { 
+        question: "What is phishing in online transactions?", 
+        answer: "Phishing is a form of fraud where scammers impersonate legitimate institutions to trick users into revealing sensitive information like credit card details, passwords, and other private data. This often happens through fake emails or websites." 
+    },
+    { 
+        question: "What is two-factor authentication (2FA)?", 
+        answer: "Two-factor authentication (2FA) adds an extra layer of security to online transactions. After entering your password, 2FA requires you to verify your identity through another method, such as a code sent to your phone or an authentication app." 
+    },
+    { 
+        question: "What is a chargeback?", 
+        answer: "A chargeback is a process where a credit or debit card holder disputes a transaction, and the bank or card issuer reverses the payment. Chargebacks can be initiated in case of fraud, disputes, or errors in transactions." 
+    },
+    { 
+        question: "How can online fraud affect businesses?", 
+        answer: "Online fraud can lead to significant financial losses for businesses, damage their reputation, and erode customer trust. Fraudulent transactions can result in chargebacks, legal fees, and penalties, and the business may also face increased security costs." 
+    },
+    { 
+        question: "How do online payment gateways work?", 
+        answer: "Online payment gateways securely process electronic transactions between the buyer, the seller, and the bank. When a customer makes a purchase, the gateway encrypts the payment details and communicates with the bank to approve or decline the transaction." 
+    },
+    { 
+        question: "What is tokenization in online transactions?", 
+        answer: "Tokenization replaces sensitive payment data, like credit card numbers, with a unique identifier or 'token.' This token is used in place of actual data for processing transactions, reducing the risk of data breaches and fraud." 
+    },
+    { 
+        question: "What is the difference between credit card and debit card fraud?", 
+        answer: "Credit card fraud involves unauthorized use of a credit card for purchases, whereas debit card fraud involves unauthorized access to a person’s bank account linked to their debit card, leading to direct withdrawals from their account." 
+    },
+    { 
+        question: "How do I protect myself from credit card fraud?", 
+        answer: "To protect yourself from credit card fraud, avoid sharing your card information over unsecured websites, use secure payment systems, regularly check account statements for unfamiliar transactions, and enable alerts for any suspicious activities." 
+    },
+    { 
+        question: "What are the risks of using a debit card online?", 
+        answer: "The risks of using a debit card online include exposure to fraud if the card information is intercepted by hackers. If fraud occurs, it can directly impact your bank account balance, unlike credit card fraud, which can be disputed and temporarily reversed." 
+    },
+    { 
+        question: "Can online banking be hacked?", 
+        answer: "Yes, online banking can be hacked through methods like phishing, malware, or brute-force attacks on passwords. It is important to use strong security measures, including unique passwords, encryption, and two-factor authentication." 
+    },
+    { 
+        question: "What is the risk of using public Wi-Fi for online banking?", 
+        answer: "Public Wi-Fi networks are vulnerable to hackers who can intercept data being transmitted, including passwords and credit card details. Avoid conducting sensitive transactions, such as online banking, when connected to public Wi-Fi." 
+    },
+    { 
+        question: "What is a payment gateway?", 
+        answer: "A payment gateway is a technology that processes online payments by securely transmitting the transaction details between the buyer, seller, and the bank. It ensures the transaction is encrypted and safe from fraud." 
+    },
+    { 
+        question: "What is an online money transfer service?", 
+        answer: "An online money transfer service allows users to send money electronically over the internet, either domestically or internationally. Popular services include PayPal, Venmo, and TransferWise, which provide secure, instant, and low-cost transfers." 
+    },
+    { 
+        question: "How can I spot fraudulent online transactions?", 
+        answer: "To spot fraudulent transactions, regularly monitor your bank statements, set up transaction alerts, and review any unauthorized or unusual charges. If you spot a discrepancy, report it immediately to your bank or credit card issuer." 
+    },
+    { 
+        question: "What is the role of AI in detecting online fraud?", 
+        answer: "AI plays a crucial role in detecting online fraud by analyzing vast amounts of data in real-time to identify patterns and anomalies. It can recognize signs of suspicious behavior, such as unusual transaction sizes or locations, and flag them for further review." 
+    },
+    { 
+        question: "What is the difference between online banking and mobile banking?", 
+        answer: "Online banking refers to banking services accessed through a computer's web browser, while mobile banking is specifically designed for smartphones, allowing users to conduct banking transactions through an app." 
+    },
+    { 
+        question: "What is the risk of storing credit card details online?", 
+        answer: "Storing credit card details online can expose you to data breaches and fraud. If a website or service is hacked, your card details could be stolen. Use trusted services with strong encryption and consider using virtual credit cards for online purchases." 
+    },
+    { 
+        question: "What is a credit card chargeback?", 
+        answer: "A chargeback is a reversal of a transaction, typically initiated by the cardholder through their bank. It occurs when a customer disputes a charge, often due to fraud, dissatisfaction with the product, or errors in billing." 
+    },
+    { 
+        question: "How do I dispute a fraudulent charge?", 
+        answer: "To dispute a fraudulent charge, contact your bank or credit card issuer immediately. You will likely be asked to provide details about the transaction and your account. The bank will investigate and may issue a chargeback." 
+    },
+    { 
+        question: "What are virtual credit cards?", 
+        answer: "Virtual credit cards are temporary, disposable card numbers linked to your actual account. They are used for online transactions and help protect your real card details from being compromised." 
+    },
+    { 
+        question: "How can I protect my online payment details?", 
+        answer: "To protect your online payment details, use encrypted websites, avoid saving your card details on unfamiliar platforms, enable two-factor authentication, and use secure payment methods like PayPal or virtual cards." 
+    },
+    { 
+        question: "What is an EMV chip?", 
+        answer: "An EMV chip is a small, embedded microchip on a credit or debit card. It enhances security by generating unique transaction codes for each purchase, making it harder for criminals to clone the card." 
+    },
+    { 
+        question: "What should I do if I lose my credit card?", 
+        answer: "If you lose your credit card, report it immediately to your bank or card issuer to block the card and prevent unauthorized transactions. You may also request a replacement card." 
+    },
+    { 
+        question: "What is biometric authentication?", 
+        answer: "Biometric authentication uses unique biological traits, such as fingerprints or facial recognition, to verify your identity during transactions, adding an extra layer of security in online banking and payments." 
+    },
+    { 
+        question: "What is the safest way to make payments online?", 
+        answer: "The safest way to make payments online is to use trusted, secure websites that offer encryption, use two-factor authentication, and prefer payment methods like PayPal or virtual cards over entering your actual credit card details." 
+    },
+    { 
+        question: "What is a one-time password (OTP)?", 
+        answer: "A one-time password (OTP) is a unique, temporary password sent to your phone or email to authenticate online transactions. It’s an additional layer of security to ensure only authorized users complete the transaction." 
+    },
+    { 
+        question: "How do online fraudsters steal credit card information?", 
+        answer: "Online fraudsters may steal credit card information through phishing attacks, malware, data breaches, or unsecured websites. They may use this data to make unauthorized transactions or sell it on the dark web." 
+    },
+    { 
+        question: "What is PCI-DSS compliance?", 
+        answer: "PCI-DSS (Payment Card Industry Data Security Standard) is a set of security standards designed to protect credit card data. Merchants and service providers who store, process, or transmit credit card information must comply with PCI-DSS." 
+    },
+    { 
+        question: "What should I do if my debit card is hacked?", 
+        answer: "If your debit card is hacked, report the issue immediately to your bank to freeze the account, investigate the fraud, and recover any stolen funds. You may also need to request a new card and change any associated passwords." 
+    },
+    { 
+        question: "What is the difference between a debit card and a credit card?", 
+        answer: "A debit card allows you to spend money directly from your bank account, while a credit card lets you borrow money up to a certain limit to make purchases, which you repay later with interest." 
+    },
+    { 
+        question: "How can I detect if my card details were compromised?", 
+        answer: "To detect compromised card details, check your bank statements regularly for unauthorized transactions. If you notice anything suspicious, contact your bank to dispute the charge and block the card." 
+    },
+    { 
+        question: "What is a bank security token?", 
+        answer: "A bank security token is a physical or digital device used for secure authentication in online banking. It generates one-time passwords (OTPs) for logging into your account or authorizing transactions." 
+    },
+    { 
+        question: "What is card skimming?", 
+        answer: "Card skimming is a type of fraud where a small device is placed on ATMs or point-of-sale machines to capture the magnetic strip data from a credit or debit card. Fraudsters use this data to make unauthorized transactions." 
+    },
+    { 
+        question: "How can I secure my online payments while traveling?", 
+        answer: "When traveling, ensure that you use secure, encrypted networks for online payments, avoid using public Wi-Fi for transactions, and inform your bank about your travel plans to avoid issues with your cards being flagged for fraud." 
+    },
+    { 
+        question: "What is a digital wallet?", 
+        answer: "A digital wallet is an electronic device or online service that stores users' payment information and passwords for numerous payment methods and websites, making online transactions easier and more secure." 
+    },
+    { 
+        question: "How can I prevent identity theft in online banking?", 
+        answer: "To prevent identity theft, use strong, unique passwords, enable two-factor authentication, avoid using public Wi-Fi for transactions, and always monitor your account for suspicious activity." 
+    },
+    { 
+        question: "What is account takeover fraud?", 
+        answer: "Account takeover fraud occurs when a fraudster gains unauthorized access to your online banking account, typically through stolen login credentials, and makes fraudulent transactions using your identity." 
+    },
+    { 
+        question: "What is the role of encryption in online transactions?", 
+        answer: "Encryption ensures that sensitive data, such as credit card information, is transformed into unreadable code during transmission. This helps protect it from hackers and ensures secure online transactions." 
+    },
+    { 
+        question: "How can I check if an online store is secure?", 
+        answer: "Look for 'https://' in the URL, which indicates the website uses encryption, and check for security certificates. A secure online store will also provide visible contact information and a privacy policy." 
+    },
+    { 
+        question: "What is the difference between a chargeback and a refund?", 
+        answer: "A chargeback is initiated by the cardholder to reverse a fraudulent or disputed charge, whereas a refund is a voluntary action by the merchant to return money for returned goods or canceled services." 
+    },
+    { 
+        question: "What are the best practices for online credit card transactions?", 
+        answer: "Best practices for online credit card transactions include using secure websites with encryption, avoiding public Wi-Fi, using virtual cards for online purchases, and regularly monitoring account statements." 
+    }
+
+            // Add more question-answer pairs as needed
+        ];
+
+        const chatContainer = document.getElementById('chat-container');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+
+        function findAnswer(userText) {
+            const userQuery = userText.toLowerCase();
+
+            for (let i = 0; i < questionsAndAnswers.length; i++) {
+                const question = questionsAndAnswers[i].question.toLowerCase();
+                if (userQuery.includes(question) || question.includes(userQuery)) {
+                    return questionsAndAnswers[i].answer;
+                }
+            }
+
+            return "Sorry, I don't have an answer for that. Please ask something else.";
+        }
+
+        sendBtn.addEventListener('click', function() {
+            const userText = userInput.value;
+            if (userText.trim() === "") return;
+
+            const userMessage = document.createElement('div');
+            userMessage.classList.add('user');
+            userMessage.textContent = userText;
+            chatContainer.appendChild(userMessage);
+
+            const botMessage = document.createElement('div');
+            botMessage.classList.add('chatbot');
+            botMessage.textContent = findAnswer(userText);
+
+            chatContainer.appendChild(botMessage);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            userInput.value = '';
+        });
+
+        userInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                sendBtn.click();
+            }
+        });
+    </script>
+</body>
+</html>

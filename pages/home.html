@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CREDsafe</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        body {
+            background: linear-gradient(45deg, orange, white, purple, white);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        #background-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: #fff;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(45deg, #ff7f50, #ff4500);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        #fraud-detection-info {
+            width: 80%;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            text-align: left;
+            font-size: 1.1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            font-size: 0.9rem;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Canvas -->
+    <canvas id="background-canvas"></canvas>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>CREDsafe</h1>
+        <h2>Access</h2>
+        <button onclick="location.href='form.html'" class="button">Ask any Doubt</button>
+        <button onclick="location.href='#'" class="button">Know Fraud</button>
+        <button onclick="location.href='#'" class="button">Reach Us</button>
+    </div>
+
+    <!-- Fraud Detection Explanation -->
+    <div id="fraud-detection-info">
+        <h2>How Credit Card Fraud Detection Works</h2>
+        <p>
+            Credit card fraud detection involves the use of advanced machine learning algorithms and 
+            statistical models to identify unusual transaction patterns that may indicate fraudulent activity.
+            The process generally works in the following steps:
+        </p>
+        <ol>
+            <li><strong>Data Collection:</strong> Transaction data is collected from credit card activities, 
+                including transaction amount, location, time, and merchant details.</li>
+            <li><strong>Feature Engineering:</strong> Various features (such as location, time of transaction, 
+                and purchase history) are derived from raw data to better represent the patterns of normal 
+                and fraudulent behavior.</li>
+            <li><strong>Model Training:</strong> Machine learning models, such as logistic regression, decision trees, 
+                or neural networks, are trained on historical data of known fraudulent and non-fraudulent transactions.</li>
+            <li><strong>Transaction Monitoring:</strong> The trained models continuously monitor ongoing transactions 
+                in real time to flag suspicious activities based on abnormal patterns.</li>
+            <li><strong>Alerts and Action:</strong> If the model detects a high probability of fraud, an alert is 
+                generated for review, and actions such as blocking the transaction or notifying the cardholder are taken.</li>
+        </ol>
+        <p>
+            These detection techniques continuously evolve as new fraud patterns emerge, helping to protect users 
+            from unauthorized transactions.
+        </p>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        © 2024 CREDsafe. All rights reserved.
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Background animation (particles)
+        const backgroundCanvas = document.getElementById('background-canvas');
+        const bgCtx = backgroundCanvas.getContext('2d');
+        backgroundCanvas.width = window.innerWidth;
+        backgroundCanvas.height = window.innerHeight;
+
+        const particles = [];
+        const particleCount = 50;
+
+        class Particle {
+            constructor(x, y, radius) {
+                this.x = x;
+                this.y = y;
+                this.radius = radius;
+                this.dx = Math.random() * 2 - 1;
+                this.dy = Math.random() * 2 - 1;
+            }
+
+            draw() {
+                bgCtx.beginPath();
+                bgCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                bgCtx.fillStyle = "white";
+                bgCtx.fill();
+            }
+
+            update() {
+                this.x += this.dx;
+                this.y += this.dy;
+
+                if (this.x + this.radius > backgroundCanvas.width || this.x - this.radius < 0) this.dx *= -1;
+                if (this.y + this.radius > backgroundCanvas.height || this.y - this.radius < 0) this.dy *= -1;
+
+                this.draw();
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) {
+            const x = Math.random() * backgroundCanvas.width;
+            const y = Math.random() * backgroundCanvas.height;
+            const radius = Math.random() * 5 + 2;
+            particles.push(new Particle(x, y, radius));
+        }
+
+        function animateBackground() {
+            bgCtx.clearRect(0, 0, backgroundCanvas.width, backgroundCanvas.height);
+            for (let particle of particles) {
+                particle.update();
+            }
+            requestAnimationFrame(animateBackground);
+        }
+        animateBackground();
+
+        window.addEventListener('resize', () => {
+            backgroundCanvas.width = window.innerWidth;
+            backgroundCanvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
